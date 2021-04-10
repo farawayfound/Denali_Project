@@ -1,0 +1,25 @@
+﻿@page "/overview"
+
+@inject IHttpClientFactory _clientFactory
+
+<h3>Overview Data</h3>
+
+@code
+{
+    OverviewDataModel overview;
+    string errorString;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = _clientFactory.CreateClient();
+        try
+        {
+            overview = await client.GetFromJsonAsync<OverviewDataModel>("https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo");
+            errorString = null;
+        }
+        catch (Exception e)
+        {
+            errorString = $"Unable to get company data: {e.Message}";
+        }
+    }
+}
