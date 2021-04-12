@@ -3,6 +3,35 @@
 @inject IHttpClientFactory _clientFactory
 
 <h3>Overview Data</h3>
+@if (string.IsNullOrWhiteSpace(errorString) == false)
+{
+    <div class="h3">@errorString</div>
+}
+else if (overview is null)
+{
+    <div class="h4">Loading...</div>
+}
+else
+{
+    <table class="accordion">
+        <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+            </tr>
+        </tbody>
+    </table>
+}
 
 @code
 {
