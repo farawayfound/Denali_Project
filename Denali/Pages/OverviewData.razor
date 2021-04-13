@@ -2,53 +2,66 @@
 
 @inject IHttpClientFactory _clientFactory
 
-<h3>Overview Data</h3>
-@if (string.IsNullOrWhiteSpace(errorString) == false)
-{
-    <div class="h3">@errorString</div>
-}
-else if (overview is null)
-{
-    <div class="h4">Loading...</div>
-}
-else
-{
-    <table class="accordion">
-        <thead>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
+    <head>
+        <link href="~/css/site.css" rel="stylesheet" />
+    </head>
 
-            </tr>
-        </tbody>
-    </table>
-}
+    <h3>Overview Data</h3>
 
-@code
-{
-    OverviewDataModel overview;
-    string errorString;
-
-    protected override async Task OnInitializedAsync()
+    @if (string.IsNullOrWhiteSpace(errorString) == false)
     {
-        var client = _clientFactory.CreateClient();
-        try
+        <div class="h3">@errorString</div>
+    }
+    else if (overview is null)
+    {
+        <div class="h4">Loading...</div>
+    }
+    else
+    {
+        <h2>@overview.Symbol</h2>
+        <h3>@overview.Name</h3>
+        <hr />
+        <div>@overview.Description</div>
+        <hr />
+        <h4>Key Stats</h4>
+        <table class="alert-dark">
+            <thead>
+                <tr>
+                    <th>Asset Type</th>
+                    <th>Exchange</th>
+                    <th>Full Time Employees</th>
+                    <th>Market Capitalization</th>
+                    <th>1 year gross profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@overview.AssetType</td>
+                    <td>@overview.Exchange</td>
+                    <td>@overview.FullTimeEmployees</td>
+                    <td>@overview.MarketCapitalization</td>
+                    <td>@overview.GrossProfitTTM</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+
+    @code
+{
+        OverviewDataModel overview;
+        string errorString;
+
+        protected override async Task OnInitializedAsync()
         {
-            overview = await client.GetFromJsonAsync<OverviewDataModel>("https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo");
-            errorString = null;
-        }
-        catch (Exception e)
-        {
-            errorString = $"Unable to get company data: {e.Message}";
+            var client = _clientFactory.CreateClient();
+            try
+            {
+                overview = await client.GetFromJsonAsync<OverviewDataModel>("https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=demo");
+                errorString = null;
+            }
+            catch (Exception e)
+            {
+                errorString = $"Unable to get company data: {e.Message}";
+            }
         }
     }
-}
